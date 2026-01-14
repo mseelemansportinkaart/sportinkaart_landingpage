@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waarom Sportinkaart</title>
+    <style>
+        /* Section Styling */
+        #waarom-sportinkaart {
+            position: relative;
+            /* Ensure the section has height/padding so background is visible */
+            padding: 100px 20px;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: #f4f4f4; /* Fallback color */
+        }
+
+        /* Background Image with Fade Effect */
+        #waarom-sportinkaart::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Using the corrected filename */
+            background-image: url('sportinkaart-banner-kopie.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0; /* Behind the content */
+            
+            /* Animation setup */
+            opacity: 0;
+            transition: opacity 1.5s ease-out;
+        }
+
+        /* Class added by JS to trigger fade-in */
+        #waarom-sportinkaart.bg-visible::before {
+            opacity: 1;
+        }
+
+        /* Components Container */
+        .components-container {
+            position: relative;
+            z-index: 1; /* Places content ON TOP of the background */
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* Individual Component Styling */
+        .component-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 10px;
+            flex: 1;
+            min-width: 280px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <section id="waarom-sportinkaart">
+        <div class="components-container">
+            <div class="component-card">
+                <h3>Component 1</h3>
+                <p>Beschrijving van het eerste voordeel.</p>
+            </div>
+            <div class="component-card">
+                <h3>Component 2</h3>
+                <p>Beschrijving van het tweede voordeel.</p>
+            </div>
+            <div class="component-card">
+                <h3>Component 3</h3>
+                <p>Beschrijving van het derde voordeel.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const section = document.getElementById('waarom-sportinkaart');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    section.classList.add('bg-visible');
+                }
+            });
+        }, { threshold: 0.3 }); // Trigger when 30% of section is visible
+
+        observer.observe(section);
+    </script>
+</body>
+</html>
