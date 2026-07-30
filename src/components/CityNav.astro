@@ -1,0 +1,11 @@
+---
+interface Props { cities: { slug: string; name: string }[]; currentSlug: string; }
+const { cities, currentSlug } = Astro.props;
+---
+<nav aria-label="Steden" style="display:flex;flex-wrap:wrap;gap:12px;">
+  {cities.map((c) => (
+    c.slug === currentSlug
+      ? <span style="font-weight:900;color:var(--primary-teal);">{c.name}</span>
+      : <a href={`/sporten-in-${c.slug}`} style="font-weight:700;text-decoration:underline;">{c.name}</a>
+  ))}
+</nav>
