@@ -12,12 +12,12 @@ const description = 'Vind direct alle sportlocaties bij jou in de buurt. Van voe
       <p>Vind direct alle sportlocaties bij jou in de buurt. Van voetbalveldjes tot sportscholen, alles in één overzichtelijke kaart.</p>
 
       <div class="cta-buttons">
-        <a href="#" class="btn btn-primary">
-          <i class="fab fa-apple"></i> Download App
-        </a>
-        <a href="#" class="btn btn-outline">
-          <i class="fab fa-google-play"></i> Play Store
-        </a>
+        <span class="btn btn-primary btn-soon" aria-disabled="true">
+          <i class="fab fa-apple"></i> App Store — binnenkort
+        </span>
+        <span class="btn btn-outline btn-soon" aria-disabled="true">
+          <i class="fab fa-google-play"></i> Play Store — binnenkort
+        </span>
       </div>
     </div>
 
@@ -73,13 +73,14 @@ const description = 'Vind direct alle sportlocaties bij jou in de buurt. Van voe
   <section id="download" class="bottom-cta">
     <h2 class="section-title" style="margin-bottom: 40px;">Download de App</h2>
     <div class="cta-buttons" style="justify-content: center;">
-      <a href="#" class="btn btn-primary">
-        <i class="fab fa-apple"></i> Download App
-      </a>
-      <a href="#" class="btn btn-outline">
-        <i class="fab fa-google-play"></i> Play Store
-      </a>
+      <span class="btn btn-primary btn-soon" aria-disabled="true">
+        <i class="fab fa-apple"></i> App Store — binnenkort
+      </span>
+      <span class="btn btn-outline btn-soon" aria-disabled="true">
+        <i class="fab fa-google-play"></i> Play Store — binnenkort
+      </span>
     </div>
+    <p style="color: var(--text-light); opacity: 0.7; margin-top: 20px; font-size: 0.95rem;">De app komt binnenkort beschikbaar in de App Store en Google Play.</p>
   </section>
 
   <section style="background:var(--dark-bg);color:#fff;padding:60px 5%;text-align:center;">
@@ -170,6 +171,17 @@ const description = 'Vind direct alle sportlocaties bij jou in de buurt. Van voe
   .btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 230, 184, 0.3);
+  }
+
+  /* "Coming soon" state — non-clickable until the store listings go live */
+  .btn-soon {
+    cursor: default;
+    opacity: 0.75;
+  }
+
+  .btn-soon:hover {
+    transform: none;
+    box-shadow: none;
   }
 
   /* Hero Image/Phone Mockup area */
