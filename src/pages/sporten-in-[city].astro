@@ -35,7 +35,7 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: `Sportlocaties in ${city.name}`,
-    numberOfItems: city.locationCount,
+    numberOfItems: city.topLocations.length,
     itemListElement: city.topLocations.map((loc, i) => ({
       '@type': 'ListItem',
       position: i + 1,

@@ -30,4 +30,7 @@ describe('normalizeSportCounts', () => {
     expect(result[0]).toEqual({ sport: 'Yoga', count: 2 });
     expect(result[1]).toEqual({ sport: 'Boksen', count: 1 });
   });
+  it('skips null elements inside a sport array', () => {
+    expect(normalizeSportCounts([['Fitness', null as unknown as string]])).toEqual([{ sport: 'Fitness', count: 1 }]);
+  });
 });

@@ -4,6 +4,7 @@ export interface SportCount {
 }
 
 export function canonicalSport(raw: string): string {
+  if (!raw) return '';
   const trimmed = raw.trim();
   if (!trimmed) return '';
   return trimmed

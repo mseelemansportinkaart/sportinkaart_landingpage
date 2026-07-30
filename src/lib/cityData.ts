@@ -52,7 +52,7 @@ async function getCity(
         Number(b.is_partner) - Number(a.is_partner) ||
         Number(b.is_featured) - Number(a.is_featured) ||
         (b.rating ?? 0) - (a.rating ?? 0) ||
-        a.name.localeCompare(b.name, 'nl'),
+        (a.name ?? '').localeCompare(b.name ?? '', 'nl'),
     )
     .slice(0, 12);
   return { slug, name, latitude, longitude, locationCount: rows.length, sports, topLocations };
