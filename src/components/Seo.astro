@@ -4,9 +4,21 @@ interface Props {
   description: string;
   canonicalPath: string;
   jsonLd?: object[];
+  /** Social share image, absolute or site-root-relative. Defaults to the shared card. */
+  image?: string;
+  imageAlt?: string;
 }
-const { title, description, canonicalPath, jsonLd = [] } = Astro.props;
+const {
+  title,
+  description,
+  canonicalPath,
+  jsonLd = [],
+  image = '/og-image.jpg',
+  imageAlt = 'Sportinkaart — sportlocaties in Flevoland, de provincie Utrecht en het Gooi op de kaart',
+} = Astro.props;
 const canonical = new URL(canonicalPath, Astro.site).href;
+// Social crawlers need an absolute URL; they do not resolve site-root-relative paths.
+const imageUrl = new URL(image, Astro.site).href;
 ---
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,11 +26,28 @@ const canonical = new URL(canonicalPath, Astro.site).href;
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="Sportinkaart" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:locale" content="nl_NL" />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={imageAlt} />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+<meta name="twitter:image:alt" content={imageAlt} />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#00E6B8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet" />
 {jsonLd.map((obj) => (
   <script type="application/ld+json" set:html={JSON.stringify(obj).replace(/</g, String.fromCharCode(92, 117, 48, 48, 51, 99))} />
