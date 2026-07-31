@@ -31,6 +31,11 @@ const jsonLd = [
     logo: `${siteUrl}/icon-512.png`,
     image: `${siteUrl}/og-image.jpg`,
     description: `Sportinkaart brengt ${totalText} sportlocaties in ${stats.cityCount} Nederlandse steden samen op één kaart.`,
+    sameAs: [
+      'https://www.facebook.com/Sportinkaart/',
+      'https://www.linkedin.com/company/67952688',
+      'https://www.instagram.com/sportinkaart/',
+    ],
     areaServed: cities.map((c) => ({
       '@type': 'City',
       name: c.name,
