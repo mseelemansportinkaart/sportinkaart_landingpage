@@ -1,9 +1,11 @@
 # SEO followups that need the owner
 
-Written 31 July 2026, alongside the automated fixes on `claude/city-pages-seo-162413`.
-Updated after `56a87c8` (closed B(i), part of E, the asset/dead-code cleanup) and `0d3fd53`
-(closed the per-sport-pages half of F)
+Written 31 July 2026, alongside the automated fixes on `claude/city-pages-seo-162413`
 (see `docs/superpowers/plans/2026-07-31-seo-improvements.md` for what *was* done).
+
+Since then you have closed several of these yourself. Updated after `56a87c8` (B(i), part of E,
+the asset/dead-code cleanup), `0d3fd53` (the per-sport-pages half of F) and `f0784d8` (B(ii) —
+privacy policy merged onto the main domain, which leaves two new points of its own).
 
 Everything below was deliberately **not** done, because it needs information, credentials or a
 product decision that only you have. They are ordered roughly by impact.
@@ -30,25 +32,42 @@ conversion action currently cannot be completed.
 
 ---
 
-## B. Privacy policy & terms — link the existing ones, then decide about merging
+## B. Privacy policy & terms
 
-The audit flagged missing `/privacy` and `/voorwaarden`. **No draft pages were scaffolded here**,
-because you already have these on a separate website/project — two competing versions of a legal
-document is worse than one.
+The audit flagged missing `/privacy` and `/voorwaarden`. No draft policy was ever written here —
+you already had one on a separate project, and two competing versions of a legal document is worse
+than one. Both original actions are now resolved:
 
-Two separate things to action:
-
-1. ~~**Short term (do this soon).** Send the canonical URL of the existing privacy policy so it can
-   be linked from the site footer.~~ **DONE** in `56a87c8` — the footer now links
-   `https://privacy.sportinkaart.nl/` on all 20 pages. That also unblocks the app-store
-   requirement for a public privacy-policy URL (item A).
+1. ~~**Short term.** Link the existing privacy policy from the footer.~~ **DONE** — first as an
+   external link in `56a87c8`, then superseded by the merge below.
    Still open: **terms/voorwaarden**, if they live at a separate URL — send it and it gets linked too.
-2. **Decision needed.** Should that separate privacy/legal project be **merged into this site**?
-   Arguments for merging: link equity stays on `sportinkaart.nl`, one deploy, one domain in the
-   store listings, no cross-domain trust gap for users. Arguments against: the other project may
-   serve more than just Sportinkaart, and merging means migrating its URLs (and any inbound links)
-   properly. This is your call — it affects information architecture, so it is worth deciding
-   before more pages are added here.
+2. ~~**Decision needed.** Should that separate privacy/legal project be merged into this site?~~
+   **DECIDED AND DONE** in `f0784d8` — the policy now lives at `/privacy` on the primary domain
+   (legal text ported verbatim) and the footer links there on all 183 pages. No link to the old
+   subdomain remains anywhere in the build.
+
+**Two things this merge leaves open:**
+
+- **Redirect `privacy.sportinkaart.nl` → `https://www.sportinkaart.nl/privacy` (301).** Flagged in
+  your own commit message, and it matters: until it is done the same policy is served from two
+  hostnames, which is textbook duplicate content. Whichever one Google picks is out of your hands,
+  and any inbound links to the subdomain currently pass nothing to the main domain. A 301 at the
+  DNS/hosting level for the subdomain is the clean fix. If the subdomain has to stay live for some
+  other reason, the fallback is a `<link rel="canonical" href="https://www.sportinkaart.nl/privacy">`
+  on the subdomain page — but the redirect is strictly better.
+- **The policy body is English on a `lang="nl"` page.** `/privacy` has ~716 words of English text
+  (`"Privacy Policy"`, `"Last updated: January 2026"`, `"Information we collect"`) inside
+  `<html lang="nl">`, with no `lang` override anywhere in the body — while its own `<title>` and
+  meta description are Dutch. Two consequences: screen readers will read English words using Dutch
+  pronunciation rules, and it is the only mixed-language page on an otherwise wholly-Dutch site.
+  This was deliberately **not** changed here, because it is your call and it touches a legal
+  document:
+  - *Translate it to Dutch* — best for users and consistency, but the Dutch text then becomes the
+    operative policy, so it needs to be reviewed as legal text, not just translated.
+  - *Keep it English and label it* — add `lang="en"` to the `<main class="legal">` element in
+    `src/pages/privacy.astro`. One attribute, no legal wording touched, fixes the accessibility
+    and language-signal problem immediately. Sensible as an interim step even if you plan to
+    translate later.
 
 ---
 
