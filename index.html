@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sportinkaart - Vind Jouw Sportlocatie</title>
+    <title>Sportinkaart | Sportclubs en sportscholen bij jou in de buurt</title>
+    <meta name="description" content="Ontdek waar je in Nederland kunt sporten. Sportinkaart laat alle sportclubs, verenigingen en sportscholen op de kaart zien, zodat je snel een plek vindt om lid te worden.">
+    <meta property="og:title" content="Sportinkaart | Sportclubs en sportscholen bij jou in de buurt">
+    <meta property="og:description" content="Vind sportclubs, verenigingen en sportscholen bij jou in de buurt en zie meteen waar je kunt sporten en lid kunt worden.">
+    <meta property="og:type" content="website">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -161,6 +165,26 @@
             text-align: center;
             position: relative;
             z-index: 2;
+            overflow: hidden;
+        }
+
+        .features::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('sportinkaart-banner-kopie.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 1.5s ease-out;
+        }
+
+        .features.bg-visible::before {
+            opacity: 1;
         }
 
         .section-title {
@@ -173,12 +197,14 @@
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
         .feature-card {
-            padding: 30px;
+            padding: 20px;
             background: var(--grey-light);
             border-radius: 20px;
             opacity: 0;
@@ -192,8 +218,8 @@
         }
 
         /* Staggered delays for the fade-in */
-        .feature-card:nth-child(2) { transition-delay: 0.2s; }
-        .feature-card:nth-child(3) { transition-delay: 0.4s; }
+        .feature-card:nth-child(2) { transition-delay: 0.3s; }
+        .feature-card:nth-child(3) { transition-delay: 0.6s; }
 
         .feature-card.visible:hover {
             transform: translateY(-10px);
@@ -201,21 +227,26 @@
         }
 
         .icon-box {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             background-color: var(--dark-bg);
             color: var(--primary-teal);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2rem;
-            margin: 0 auto 20px;
+            font-size: 1.5rem;
+            margin: 0 auto 15px;
         }
 
         .feature-card h3 {
             margin-bottom: 15px;
             font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
         }
 
         /* --- App Showcase / Map Section --- */
@@ -353,7 +384,7 @@
     <header class="hero">
         <div class="hero-content">
             <h1>Sporten in<br><span>Nederland</span></h1>
-            <p>Vind direct alle sportlocaties bij jou in de buurt. Van voetbalveldjes tot sportscholen, alles in één overzichtelijke kaart.</p>
+            <p>Vind sportclubs, verenigingen en sportscholen bij jou in de buurt. Op de kaart zie je meteen waar je kunt sporten en lid kunt worden.</p>
             
             <div class="cta-buttons">
                 <a href="#" class="btn btn-primary">
@@ -378,24 +409,24 @@
                 <div class="icon-box">
                     <i class="fas fa-map-marker-alt"></i>
                 </div>
-                <h3>Locaties Dichtbij</h3>
-                <p>Gebruik je GPS om direct te zien waar je kunt sporten in jouw directe omgeving.</p>
+                <h3>Locaties dichtbij</h3>
+                <p>Zie via je locatie meteen welke sportclubs en sportscholen bij je in de buurt zitten.</p>
             </div>
 
             <div class="feature-card">
                 <div class="icon-box">
                     <i class="fas fa-running"></i>
                 </div>
-                <h3>Alle Sporten</h3>
-                <p>Filter eenvoudig op jouw favoriete sport. Voetbal, tennis, fitness of hardlopen?</p>
+                <h3>Alle sporten</h3>
+                <p>Filter op de sport die je zoekt, of dat nu voetbal, tennis, fitness of iets anders is.</p>
             </div>
 
             <div class="feature-card">
                 <div class="icon-box">
                     <i class="fas fa-route"></i>
                 </div>
-                <h3>Direct Navigeren</h3>
-                <p>Locatie gevonden? Start direct de routebeschrijving via Google Maps of Apple Maps.</p>
+                <h3>Direct navigeren</h3>
+                <p>Plek gevonden? Open meteen de route in Google Maps of Apple Maps.</p>
             </div>
         </div>
     </section>
@@ -407,15 +438,15 @@
             </div>
         </div>
         <div class="showcase-text">
-            <h2>Ontdek nieuwe <br><span class="highlight">Energie</span></h2>
-            <p>Of je nu net verhuisd bent of gewoon een nieuwe plek zoekt om je energie kwijt te kunnen. Sportinkaart helpt je de weg te vinden.</p>
+            <h2>Vind een club <br><span class="highlight">die bij je past</span></h2>
+            <p>Net verhuisd of gewoon toe aan iets nieuws? Sportinkaart helpt je een club of sportschool te vinden waar je je thuis voelt.</p>
             <br>
-            <p>Sluit je aan bij duizenden andere sporters in Nederland.</p>
+            <p>Zo blijf je sporten, ook op een nieuwe plek.</p>
         </div>
     </section>
 
     <section id="download" class="bottom-cta">
-        <h2 class="section-title" style="margin-bottom: 40px;">Download de App</h2>
+        <h2 class="section-title" style="margin-bottom: 40px;">Download de app</h2>
         <div class="cta-buttons" style="justify-content: center;">
             <a href="#" class="btn btn-primary">
                 <i class="fab fa-apple"></i> Download App
@@ -459,6 +490,20 @@
         document.querySelectorAll('.feature-card').forEach(card => {
             observer.observe(card);
         });
+
+        // Fade-in for features background
+        const featuresSection = document.querySelector('.features');
+        const bgObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('bg-visible');
+                }
+            });
+        }, { threshold: 0.2 });
+        
+        if (featuresSection) {
+            bgObserver.observe(featuresSection);
+        }
     </script>
 
 </body>
