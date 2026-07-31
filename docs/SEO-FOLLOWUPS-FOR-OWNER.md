@@ -1,7 +1,8 @@
 # SEO followups that need the owner
 
 Written 31 July 2026, alongside the automated fixes on `claude/city-pages-seo-162413`.
-Updated after `56a87c8`, which closed items B(i), part of E, and the asset/dead-code cleanup
+Updated after `56a87c8` (closed B(i), part of E, the asset/dead-code cleanup) and `0d3fd53`
+(closed the per-sport-pages half of F)
 (see `docs/superpowers/plans/2026-07-31-seo-improvements.md` for what *was* done).
 
 Everything below was deliberately **not** done, because it needs information, credentials or a
@@ -140,17 +141,28 @@ so it was left alone deliberately. The main decisions before anyone builds it:
    name, an address and a sport list. That is thin. Google actively penalises mass-generated pages
    with no added value. Opening hours, descriptions, photos or reviews would need to come from
    somewhere first.
-2. **Pagination or filtering for the city pages?** Showing 12 of 391 is the immediate, much cheaper
-   win — either `/sporten-in-utrecht/pagina/2` or per-sport pages like
-   `/sporten-in-utrecht/fitness`. The per-sport split is probably the better bet: it matches how
-   people actually search ("sportschool Utrecht", "yoga Amersfoort") and each page has a genuine
-   reason to exist. Roughly 18 cities × their top categories ≈ a few hundred pages of real intent
-   coverage, without the thin-content risk of one page per venue.
+2. ~~**Pagination or filtering for the city pages?** Showing 12 of 391 is the immediate, much
+   cheaper win — per-sport pages like `/sporten-in-utrecht/fitness`.~~ **DONE** in `0d3fd53`:
+   **162 per-sport pages**, gated at ≥3 locations so none of them is thin, each listing *all*
+   venues for that sport (no 12-cap), with Breadcrumb + ItemList JSON-LD and related-sport links.
+   The build now emits **182 pages**. This answers the audit's "12 of 391" and "wrong page type"
+   findings directly.
 3. **Who maintains it?** More pages means more stale data. The current per-city model is
    maintainable by one person; a venue-level directory probably is not, without a claim/edit flow.
 
-Recommendation: do (2) before (1). Per-sport city pages are lower risk, reuse the existing data
-layer, and would answer the audit's "wrong page type" finding directly.
+**What is left of item F:** only (1), the per-venue detail pages, and (3), the maintenance
+question. The cheap, high-intent win has been taken. Before building venue pages, note the
+thin-content risk in (1) is unchanged — a venue still has only a name, an address and a sport list.
+
+Two things worth watching now that the per-sport pages exist:
+- **Slug collisions.** `sportSlug()` strips accents and non-alphanumerics, so two distinct
+  categories could in principle collapse to the same URL. None do today (verified: all 162
+  canonicals are unique), but it is worth re-checking whenever a new sport category is added.
+- **The stated count matches the list** because no venue currently repeats a sport within its
+  `sport_nl` array (verified against the live database, 0 rows). If duplicate or casing-variant
+  tags are ever introduced on one venue, the "vind je N locaties" line would overcount relative
+  to the list below it. Cheap guard if you want one: derive the heading count from
+  `locations.length` rather than from the aggregated tag count.
 
 ---
 
