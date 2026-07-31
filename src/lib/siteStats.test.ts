@@ -12,6 +12,7 @@ function city(slug: string, name: string, locationCount: number, sports: [string
     locationCount,
     sports: sports.map(([sport, count]) => ({ sport, count })),
     topLocations: [],
+    locations: [],
   };
 }
 
