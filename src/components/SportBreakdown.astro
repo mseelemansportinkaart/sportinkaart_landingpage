@@ -1,12 +1,27 @@
 ---
 import type { SportCount } from '../lib/sports';
-interface Props { sports: SportCount[]; }
-const { sports } = Astro.props;
+import { MIN_SPORT_PAGE_LOCATIONS, sportSlug } from '../lib/sports';
+// When citySlug is given, any sport with its own page (>= MIN locations) renders
+// as a link to /sporten-in-{city}/{sport}; the rest stay plain chips.
+interface Props { sports: SportCount[]; citySlug?: string; }
+const { sports, citySlug } = Astro.props;
 ---
 <ul style="list-style:none;display:flex;flex-wrap:wrap;gap:10px;">
-  {sports.map((s) => (
-    <li style="background:var(--grey-light);border-radius:50px;padding:8px 16px;font-weight:700;">
-      {s.sport} <span style="color:var(--primary-teal);">{s.count}</span>
-    </li>
-  ))}
+  {sports.map((s) => {
+    const href =
+      citySlug && s.count >= MIN_SPORT_PAGE_LOCATIONS
+        ? `/sporten-in-${citySlug}/${sportSlug(s.sport)}`
+        : null;
+    return (
+      <li style="background:var(--grey-light);border-radius:50px;padding:8px 16px;font-weight:700;">
+        {href ? (
+          <a href={href} style="text-decoration:none;color:inherit;">
+            {s.sport} <span style="color:var(--primary-teal);">{s.count}</span>
+          </a>
+        ) : (
+          <span>{s.sport} <span style="color:var(--primary-teal);">{s.count}</span></span>
+        )}
+      </li>
+    );
+  })}
 </ul>

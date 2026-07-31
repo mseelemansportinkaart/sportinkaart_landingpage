@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { canonicalSport, normalizeSportCounts } from './sports';
+import { canonicalSport, normalizeSportCounts, sportSlug } from './sports';
+
+describe('sportSlug', () => {
+  it('slugifies multi-word and casing', () => {
+    expect(sportSlug('Jeu De Boules')).toBe('jeu-de-boules');
+    expect(sportSlug('Fitness')).toBe('fitness');
+    expect(sportSlug('Crossfit')).toBe('crossfit');
+  });
+});
 
 describe('canonicalSport', () => {
   it('title-cases and trims', () => {

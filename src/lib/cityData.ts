@@ -19,6 +19,8 @@ export interface City {
   locationCount: number;
   sports: SportCount[];
   topLocations: CityLocation[];
+  // All active locations in the city (used by the per-sport pages).
+  locations: CityLocation[];
 }
 
 async function getActiveRegions() {
@@ -55,7 +57,7 @@ async function getCity(
         (a.name ?? '').localeCompare(b.name ?? '', 'nl'),
     )
     .slice(0, 12);
-  return { slug, name, latitude, longitude, locationCount: rows.length, sports, topLocations };
+  return { slug, name, latitude, longitude, locationCount: rows.length, sports, topLocations, locations: rows };
 }
 
 export async function getAllCities(): Promise<City[]> {

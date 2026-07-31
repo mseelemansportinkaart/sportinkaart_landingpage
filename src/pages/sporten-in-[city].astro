@@ -82,7 +82,8 @@ const jsonLd = [
     </p>
 
     <h2 style="margin:40px 0 16px;font-weight:900;">Sporten in {city.name}</h2>
-    <SportBreakdown sports={city.sports} />
+    <p style="opacity:.75;margin-bottom:16px;">Klik op een sport voor alle locaties in {city.name}.</p>
+    <SportBreakdown sports={city.sports} citySlug={city.slug} />
 
     <h2 style="margin:40px 0 16px;font-weight:900;">Sportlocaties in {city.name}</h2>
     <p style="opacity:.75;margin-bottom:16px;">{selectionNote}</p>
