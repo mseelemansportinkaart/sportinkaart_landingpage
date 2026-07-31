@@ -19,8 +19,8 @@ const { city, nav } = Astro.props;
 
 const path = `/sporten-in-${city.slug}`;
 const topSportNames = city.sports.slice(0, 5).map((s) => s.sport).join(', ');
-const title = `Sporten in ${city.name} — ${city.locationCount} sportlocaties op de kaart | Sportinkaart`;
-const description = `Ontdek ${city.locationCount} sportlocaties in ${city.name}. Van ${topSportNames} en meer — vind jouw sport in de buurt met Sportinkaart.`;
+const title = `Sporten in ${city.name}: ${city.locationCount} sportlocaties op de kaart | Sportinkaart`;
+const description = `Ontdek ${city.locationCount} sportlocaties in ${city.name}. Van ${topSportNames} en meer. Vind jouw sport in de buurt met Sportinkaart.`;
 
 // The page renders at most 12 of the city's locations. Say so explicitly rather than
 // letting the heading imply it lists all of them — and keep the ItemList below

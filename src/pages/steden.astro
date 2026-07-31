@@ -16,7 +16,7 @@ const totalText = formatNl(stats.totalLocations);
 const regionNames = joinNl(regions.map((r) => r.inlineName));
 
 const path = '/steden';
-const title = `Alle ${stats.cityCount} steden op Sportinkaart — ${totalText} sportlocaties`;
+const title = `Alle ${stats.cityCount} steden op Sportinkaart, ${totalText} sportlocaties`;
 const description = `Bekijk alle ${stats.cityCount} steden op Sportinkaart, samen goed voor ${totalText} sportlocaties in ${regionNames}. Kies je stad en vind sporten bij jou in de buurt.`;
 
 const siteUrl = Astro.site!.href.replace(/\/$/, '');
@@ -53,7 +53,7 @@ const jsonLd = [
     <p class="lead">
       Sportinkaart telt op dit moment <strong>{totalText} sportlocaties</strong> in
       <strong>{stats.cityCount} steden</strong>, verdeeld over <strong>{stats.categoryCount} sportcategorieën</strong>.
-      De kaart wordt per stad opgebouwd — in {regionNames} is het aanbod compleet in kaart gebracht,
+      De kaart wordt per stad opgebouwd. In {regionNames} is het aanbod compleet in kaart gebracht,
       en daarbuiten komen er stap voor stap steden bij.
     </p>
 
@@ -62,7 +62,7 @@ const jsonLd = [
         <h2>{region.name}</h2>
         <p class="region-meta">
           {region.cities.length} {region.cities.length === 1 ? 'stad' : 'steden'} ·
-          {' '}{formatNl(region.locationCount)} sportlocaties — {region.blurb}
+          {' '}{formatNl(region.locationCount)} sportlocaties. {region.blurb}
         </p>
         <ul class="city-grid">
           {region.cities.map((city) => (

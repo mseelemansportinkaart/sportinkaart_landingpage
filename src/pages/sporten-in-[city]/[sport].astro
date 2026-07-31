@@ -45,7 +45,7 @@ const { cityName, citySlug, sport, count, locations, related } = Astro.props;
 const cityPath = `/sporten-in-${citySlug}`;
 const path = `${cityPath}/${sportSlug(sport)}`;
 const sportLc = sport.toLowerCase();
-const title = `${sport} in ${cityName} — ${count} locaties op de kaart | Sportinkaart`;
+const title = `${sport} in ${cityName}: ${count} locaties op de kaart | Sportinkaart`;
 const description = `Alle ${count} plekken voor ${sportLc} in ${cityName}: adressen en websites, overzichtelijk op één kaart met Sportinkaart.`;
 
 const jsonLd = [

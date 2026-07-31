@@ -17,7 +17,7 @@ const topSportNames = joinNl(topSports.slice(0, 5).map((s) => s.sport));
 const regionNames = joinNl(regions.map((r) => r.inlineName));
 const totalText = formatNl(stats.totalLocations);
 
-const title = `Sportinkaart — ${totalText} sportlocaties in ${stats.cityCount} steden op de kaart`;
+const title = `${totalText} sportlocaties in ${stats.cityCount} steden | Sportinkaart`;
 const description = `Vind sportlocaties bij jou in de buurt. ${totalText} sportscholen, clubs, zwembaden en velden in ${stats.cityCount} steden, verdeeld over ${stats.categoryCount} sportcategorieën.`;
 
 const siteUrl = Astro.site!.href.replace(/\/$/, '');
@@ -62,18 +62,18 @@ const jsonLd = [
       <h1>Sporten in <span class="h1-accent">Nederland</span></h1>
       <p>
         Sportinkaart zet <strong>{totalText} sportlocaties</strong> in <strong>{stats.cityCount} steden</strong>
-        op één kaart. Van sportschool en yogastudio tot voetbalveld, zwembad en jeu-de-boulesbaan —
-        je ziet in één oogopslag waar je terechtkunt.
+        op één kaart. Van sportschool en yogastudio tot voetbalveld, zwembad en jeu-de-boulesbaan.
+        Zo zie je in één oogopslag waar je terechtkunt.
       </p>
 
       <div class="cta-buttons">
         <span class="btn btn-primary btn-soon" aria-disabled="true">
           <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-          App Store — binnenkort
+          App Store (binnenkort)
         </span>
         <span class="btn btn-outline btn-soon" aria-disabled="true">
           <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3.6 1.3 13.1 11 3.6 20.7c-.3-.2-.5-.6-.5-1.1V2.4c0-.5.2-.9.5-1.1zM14.5 12.4l2.6 2.6-10.6 6c-.3.2-.6.2-.9.1l8.9-8.7zM14.5 9.6 5.6 1c.3-.1.6-.1.9.1l10.6 6-2.6 2.5zM18.4 8.1l2.4 1.4c.8.5.8 1.6 0 2.1l-2.4 1.4L15.6 11l2.8-2.9z"/></svg>
-          Play Store — binnenkort
+          Play Store (binnenkort)
         </span>
       </div>
     </div>
@@ -97,24 +97,24 @@ const jsonLd = [
         <div class="icon-box">
           <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21.5s7-6.4 7-11.4a7 7 0 1 0-14 0c0 5 7 11.4 7 11.4z"/><circle cx="12" cy="10" r="2.6"/></svg>
         </div>
-        <h3>Locaties Dichtbij</h3>
-        <p>Gebruik je GPS om direct te zien waar je kunt sporten in jouw directe omgeving.</p>
+        <h3>Locaties dichtbij</h3>
+        <p>Zie via je locatie meteen waar je in de buurt kunt sporten.</p>
       </div>
 
       <div class="feature-card">
         <div class="icon-box">
           <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor" aria-hidden="true" focusable="false"><rect x="1.5" y="9" width="3" height="6" rx="1.2"/><rect x="5" y="6.5" width="3.2" height="11" rx="1.4"/><rect x="15.8" y="6.5" width="3.2" height="11" rx="1.4"/><rect x="19.5" y="9" width="3" height="6" rx="1.2"/><rect x="8" y="10.6" width="8" height="2.8" rx=".6"/></svg>
         </div>
-        <h3>Alle Sporten</h3>
-        <p>Filter op jouw sport. {topSportNames} — en nog {stats.categoryCount - 5} andere categorieën.</p>
+        <h3>Alle sporten</h3>
+        <p>Filter op jouw sport: {topSportNames}, en nog {stats.categoryCount - 5} andere categorieën.</p>
       </div>
 
       <div class="feature-card">
         <div class="icon-box">
           <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 3 3 10.4l7.6 3L13.6 21 21 3z"/></svg>
         </div>
-        <h3>Direct Navigeren</h3>
-        <p>Locatie gevonden? Start direct de routebeschrijving via Google Maps of Apple Maps.</p>
+        <h3>Direct navigeren</h3>
+        <p>Plek gevonden? Open meteen de route in Google Maps of Apple Maps.</p>
       </div>
     </div>
   </section>
@@ -134,7 +134,7 @@ const jsonLd = [
         De grootste categorie is met afstand <strong>{topSports[0].sport}</strong> ({formatNl(topSports[0].count)} locaties),
         gevolgd door {joinNl(topSports.slice(1, 4).map((s) => `${s.sport} (${formatNl(s.count)})`))}.
         Daarnaast zitten er veel kleinere categorieën in die je op een gewone zoekmachine
-        nauwelijks gebundeld vindt — denk aan korfbal, klimmen, roeien, schaatsen of waterpolo.
+        nauwelijks gebundeld vindt, zoals korfbal, klimmen, roeien, schaatsen of waterpolo.
         Juist die lange staart maakt het verschil als je iets specifieks zoekt.
       </p>
 
@@ -151,7 +151,7 @@ const jsonLd = [
         ook echt compleet is. Op dit moment beslaat de kaart <strong>{stats.cityCount} steden</strong> in
         {' '}{regionNames}. De grootste is {stats.largestCity?.name} met {formatNl(stats.largestCity?.locationCount ?? 0)} locaties;
         ook kleinere plaatsen als Urk en Emmeloord zijn volledig in kaart gebracht. De rest van Nederland
-        volgt stap voor stap — stad voor stad, met dezelfde controle op adres en sportaanbod.
+        volgt stap voor stap, stad voor stad, met dezelfde controle op adres en sportaanbod.
       </p>
 
       <div class="region-grid">
@@ -205,10 +205,10 @@ const jsonLd = [
       </div>
     </div>
     <div class="showcase-text">
-      <h2>Ontdek nieuwe <span class="highlight">Energie</span></h2>
+      <h2>Vind een club <span class="highlight">die bij je past</span></h2>
       <p>
-        Of je nu net verhuisd bent of gewoon een nieuwe plek zoekt om je energie kwijt te kunnen —
-        Sportinkaart helpt je de weg te vinden.
+        Net verhuisd of gewoon toe aan iets nieuws? Sportinkaart helpt je een plek te vinden waar je je
+        thuis voelt.
       </p>
       <p>
         Geen eindeloos scrollen door zoekresultaten en verouderde clubwebsites, maar één kaart waarop je
@@ -218,15 +218,15 @@ const jsonLd = [
   </section>
 
   <section id="download" class="bottom-cta">
-    <h2 class="section-title" style="margin-bottom: 40px;">Download de App</h2>
+    <h2 class="section-title" style="margin-bottom: 40px;">Download de app</h2>
     <div class="cta-buttons" style="justify-content: center;">
       <span class="btn btn-primary btn-soon" aria-disabled="true">
         <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-        App Store — binnenkort
+        App Store (binnenkort)
       </span>
       <span class="btn btn-outline btn-soon" aria-disabled="true">
         <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3.6 1.3 13.1 11 3.6 20.7c-.3-.2-.5-.6-.5-1.1V2.4c0-.5.2-.9.5-1.1zM14.5 12.4l2.6 2.6-10.6 6c-.3.2-.6.2-.9.1l8.9-8.7zM14.5 9.6 5.6 1c.3-.1.6-.1.9.1l10.6 6-2.6 2.5zM18.4 8.1l2.4 1.4c.8.5.8 1.6 0 2.1l-2.4 1.4L15.6 11l2.8-2.9z"/></svg>
-        Play Store — binnenkort
+        Play Store (binnenkort)
       </span>
     </div>
     <p style="color: var(--text-light); opacity: 0.7; margin-top: 20px; font-size: 0.95rem;">De app komt binnenkort beschikbaar in de App Store en Google Play.</p>
@@ -329,7 +329,7 @@ const jsonLd = [
     box-shadow: 0 10px 20px rgba(0, 230, 184, 0.3);
   }
 
-  /* "Coming soon" state — non-clickable until the store listings go live */
+  /* "Coming soon" state, non-clickable until the store listings go live */
   .btn-soon {
     cursor: default;
     opacity: 0.75;
