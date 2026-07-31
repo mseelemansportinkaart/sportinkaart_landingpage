@@ -1,6 +1,7 @@
 # SEO followups that need the owner
 
-Written 31 July 2026, alongside the automated fixes on `claude/city-pages-seo-162413`
+Written 31 July 2026, alongside the automated fixes on `claude/city-pages-seo-162413`.
+Updated after `56a87c8`, which closed items B(i), part of E, and the asset/dead-code cleanup
 (see `docs/superpowers/plans/2026-07-31-seo-improvements.md` for what *was* done).
 
 Everything below was deliberately **not** done, because it needs information, credentials or a
@@ -36,11 +37,11 @@ document is worse than one.
 
 Two separate things to action:
 
-1. **Short term (do this soon).** Send the canonical URL of the existing privacy policy (and terms,
-   if separate) and they get linked from the site footer in `src/layouts/BaseLayout.astro`.
-   An external link is fine; Google and the app stores both just need the policy to be reachable.
-   Note that the app stores will *require* a public privacy-policy URL before they accept a
-   listing — so this is on the critical path for item A too.
+1. ~~**Short term (do this soon).** Send the canonical URL of the existing privacy policy so it can
+   be linked from the site footer.~~ **DONE** in `56a87c8` — the footer now links
+   `https://privacy.sportinkaart.nl/` on all 20 pages. That also unblocks the app-store
+   requirement for a public privacy-policy URL (item A).
+   Still open: **terms/voorwaarden**, if they live at a separate URL — send it and it gets linked too.
 2. **Decision needed.** Should that separate privacy/legal project be **merged into this site**?
    Arguments for merging: link equity stays on `sportinkaart.nl`, one deploy, one domain in the
    store listings, no cross-domain trust gap for users. Arguments against: the other project may
@@ -117,11 +118,11 @@ environment, and Supabase is not reachable from the build sandbox — see the no
 - **Backlinks.** The city pages are the natural asset here: local sports federations, gemeente
   sportloketten, and the clubs themselves all have reason to link to a page listing local venues.
 - **Brand-name collision: "Sportkaart".** There is an existing, similarly-named entity. You will
-  keep losing navigational searches to it until the brand is disambiguated. Practical options:
-  claim a Google Business Profile, get consistent `sameAs` profiles (LinkedIn, Instagram, Facebook)
-  and add them to the `Organization` JSON-LD in `src/pages/index.astro` — the `sameAs` field was
-  left out because no verified profile URLs were available. Fastest single win: get the official
-  social profiles listed and linked, so Google can bind the brand name to this domain.
+  keep losing navigational searches to it until the brand is disambiguated.
+  **Partly done** in `56a87c8`: the `Organization` JSON-LD now carries `sameAs` for the Facebook,
+  LinkedIn and Instagram profiles, which is what lets Google bind the brand name to this domain.
+  Still worth doing: claim a **Google Business Profile**, and keep the name/description consistent
+  across all three social profiles so they reinforce each other.
 
 ---
 
@@ -155,13 +156,13 @@ layer, and would answer the audit's "wrong page type" finding directly.
 
 ## Minor / optional
 
-- `public/splash-icon.png` (782 KB), `public/sportinkaart-banner.jpg` (1.35 MB),
-  `public/sportinkaart-logo.png` and `public/logosportinkaart.jpg` are no longer referenced by any
-  page. They are still deployed and served. Deleting them would shrink the deploy; they were left
-  in place because they may be shared with the mobile app project. The banner JPG is the source
-  image the 142 KB WebP hero was generated from.
-- `index.html` and `waarom-section.html` in the repo root are leftovers from the pre-Astro site.
-  Astro does not build them, so they are harmless, but they are dead code.
+- ~~Four unreferenced images and the two pre-Astro root HTML files are still deployed.~~ **DONE**
+  in `56a87c8` — `splash-icon.png`, `sportinkaart-banner.jpg`, `sportinkaart-logo.png`,
+  `logosportinkaart.jpg`, `index.html` and `waarom-section.html` were all removed. The whole
+  `dist/` is now **800 KB**. Verified afterwards that no page references any deleted file and that
+  every asset still referenced resolves. Note the deleted banner JPG was the source the 142 KB WebP
+  hero was generated from — it remains recoverable from git history at `62c1248` if you ever need
+  to re-encode it.
 - `hreflang` is absent, which is correct for a Dutch-only site. Do not add empty hreflang tags.
 
 ---
