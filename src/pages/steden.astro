@@ -13,7 +13,7 @@ const regions = groupCitiesByRegion(cities).map((group) => ({
 // Ordered exactly as rendered, so ItemList positions match the visible list.
 const ordered = regions.flatMap((r) => r.cities);
 const totalText = formatNl(stats.totalLocations);
-const regionNames = joinNl(regions.map((r) => r.name));
+const regionNames = joinNl(regions.map((r) => r.inlineName));
 
 const path = '/steden';
 const title = `Alle ${stats.cityCount} steden op Sportinkaart — ${totalText} sportlocaties`;

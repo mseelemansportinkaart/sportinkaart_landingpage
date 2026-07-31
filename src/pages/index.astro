@@ -14,7 +14,7 @@ const regions = groupCitiesByRegion(cities).map((group) => ({
 }));
 const topSports = stats.sports.slice(0, 12);
 const topSportNames = joinNl(topSports.slice(0, 5).map((s) => s.sport));
-const regionNames = joinNl(regions.map((r) => r.name));
+const regionNames = joinNl(regions.map((r) => r.inlineName));
 const totalText = formatNl(stats.totalLocations);
 
 const title = `Sportinkaart — ${totalText} sportlocaties in ${stats.cityCount} steden op de kaart`;
