@@ -1,0 +1,31 @@
+---
+import Seo from '../components/Seo.astro';
+import '../styles/global.css';
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  jsonLd?: object[];
+  image?: string;
+  imageAlt?: string;
+}
+const { title, description, canonicalPath, jsonLd, image, imageAlt } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <Seo title={title} description={description} canonicalPath={canonicalPath} jsonLd={jsonLd} image={image} imageAlt={imageAlt} />
+  </head>
+  <body>
+    <header style="background:var(--dark-bg);padding:16px 5%;">
+      <a href="/"><img src="/logowittransparant.png" alt="Sportinkaart, terug naar de homepage" width="44" height="44" style="height:44px;width:auto;" /></a>
+    </header>
+    <slot />
+    <footer style="background:#000;color:#fff;padding:40px 5%;text-align:center;border-top:5px solid var(--primary-teal);">
+      <p style="opacity:.6;font-size:.9rem;">&copy; 2026 Sportinkaart. Alle rechten voorbehouden.</p>
+      <p style="opacity:.6;font-size:.9rem;margin-top:8px;">
+        <a href="/privacy" style="color:var(--primary-teal);">Privacybeleid</a>
+      </p>
+    </footer>
+  </body>
+</html>

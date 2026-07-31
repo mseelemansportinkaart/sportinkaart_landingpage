@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SportBreakdown from '../components/SportBreakdown.astro';
+import LocationList from '../components/LocationList.astro';
+import CityNav from '../components/CityNav.astro';
+import { getAllCities, type City } from '../lib/cityData';
+
+export async function getStaticPaths() {
+  const cities = await getAllCities();
+  const nav = cities.map((c) => ({ slug: c.slug, name: c.name }));
+  return cities.map((city) => ({
+    params: { city: city.slug },
+    props: { city, nav },
+  }));
+}
+
+interface Props { city: City; nav: { slug: string; name: string }[]; }
+const { city, nav } = Astro.props;
+
+const path = `/sporten-in-${city.slug}`;
+const topSportNames = city.sports.slice(0, 5).map((s) => s.sport).join(', ');
+const title = `Sporten in ${city.name}: ${city.locationCount} sportlocaties op de kaart | Sportinkaart`;
+const description = `Ontdek ${city.locationCount} sportlocaties in ${city.name}. Van ${topSportNames} en meer. Vind jouw sport in de buurt met Sportinkaart.`;
+
+// The page renders at most 12 of the city's locations. Say so explicitly rather than
+// letting the heading imply it lists all of them — and keep the ItemList below
+// describing exactly the items that are on the page.
+const shownCount = city.topLocations.length;
+const selectionNote =
+  shownCount >= city.locationCount
+    ? `Alle ${city.locationCount} locaties in ${city.name}.`
+    : `Een selectie van ${shownCount} van de ${city.locationCount} locaties in ${city.name}.`;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).href },
+      { '@type': 'ListItem', position: 2, name: `Sporten in ${city.name}`, item: new URL(path, Astro.site).href },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `Sportlocaties in ${city.name}`,
+    description: selectionNote,
+    numberOfItems: shownCount,
+    itemListElement: city.topLocations.map((loc, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: loc.name,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: `Hoeveel sportlocaties zijn er in ${city.name}?`,
+        acceptedAnswer: { '@type': 'Answer', text: `In ${city.name} vind je ${city.locationCount} sportlocaties in ${city.sports.length} sportcategorieën op Sportinkaart.` },
+      },
+      {
+        '@type': 'Question',
+        name: `Waar kan ik sporten in ${city.name}?`,
+        acceptedAnswer: { '@type': 'Answer', text: `Populaire sporten in ${city.name} zijn ${topSportNames}. Bekijk alle locaties op de kaart via Sportinkaart.` },
+      },
+    ],
+  },
+];
+---
+<BaseLayout title={title} description={description} canonicalPath={path} jsonLd={jsonLd}>
+  <main style="max-width:1000px;margin:0 auto;padding:60px 5%;">
+    <nav aria-label="Kruimelpad" style="font-size:.9rem;opacity:.7;margin-bottom:20px;">
+      <a href="/">Home</a> / <span>Sporten in {city.name}</span>
+    </nav>
+    <h1 style="font-size:2.6rem;font-weight:900;text-transform:uppercase;">Sporten in {city.name}</h1>
+    <p style="font-size:1.2rem;margin:20px 0;">
+      In <strong>{city.name}</strong> vind je <strong>{city.locationCount}</strong> sportlocaties
+      verdeeld over <strong>{city.sports.length}</strong> sportcategorieën. Ontdek ze allemaal op de kaart.
+    </p>
+
+    <h2 style="margin:40px 0 16px;font-weight:900;">Sporten in {city.name}</h2>
+    <p style="opacity:.75;margin-bottom:16px;">Klik op een sport voor alle locaties in {city.name}.</p>
+    <SportBreakdown sports={city.sports} citySlug={city.slug} />
+
+    <h2 style="margin:40px 0 16px;font-weight:900;">Sportlocaties in {city.name}</h2>
+    <p style="opacity:.75;margin-bottom:16px;">{selectionNote}</p>
+    <LocationList locations={city.topLocations} />
+
+    <h2 style="margin:40px 0 16px;font-weight:900;">Sporten in andere steden</h2>
+    <CityNav cities={nav} currentSlug={city.slug} />
+  </main>
+</BaseLayout>

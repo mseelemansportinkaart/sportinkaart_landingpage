@@ -1,0 +1,171 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllCities } from '../lib/cityData';
+import { groupCitiesByRegion } from '../lib/regions';
+import { formatNl, joinNl, summariseCities } from '../lib/siteStats';
+
+const cities = await getAllCities();
+const stats = summariseCities(cities);
+const regions = groupCitiesByRegion(cities).map((group) => ({
+  ...group,
+  locationCount: group.cities.reduce((sum, c) => sum + c.locationCount, 0),
+}));
+// Ordered exactly as rendered, so ItemList positions match the visible list.
+const ordered = regions.flatMap((r) => r.cities);
+const totalText = formatNl(stats.totalLocations);
+const regionNames = joinNl(regions.map((r) => r.inlineName));
+
+const path = '/steden';
+const title = `Alle ${stats.cityCount} steden op Sportinkaart, ${totalText} sportlocaties`;
+const description = `Bekijk alle ${stats.cityCount} steden op Sportinkaart, samen goed voor ${totalText} sportlocaties in ${regionNames}. Kies je stad en vind sporten bij jou in de buurt.`;
+
+const siteUrl = Astro.site!.href.replace(/\/$/, '');
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
+      { '@type': 'ListItem', position: 2, name: 'Alle steden', item: `${siteUrl}${path}` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Steden op Sportinkaart',
+    numberOfItems: ordered.length,
+    itemListElement: ordered.map((city, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: `Sporten in ${city.name}`,
+      url: `${siteUrl}/sporten-in-${city.slug}`,
+    })),
+  },
+];
+---
+<BaseLayout title={title} description={description} canonicalPath={path} jsonLd={jsonLd}>
+  <main class="steden">
+    <nav aria-label="Kruimelpad" class="crumbs">
+      <a href="/">Home</a> / <span>Alle steden</span>
+    </nav>
+
+    <h1>Alle steden op Sportinkaart</h1>
+    <p class="lead">
+      Sportinkaart telt op dit moment <strong>{totalText} sportlocaties</strong> in
+      <strong>{stats.cityCount} steden</strong>, verdeeld over <strong>{stats.categoryCount} sportcategorieën</strong>.
+      De kaart wordt per stad opgebouwd. In {regionNames} is het aanbod compleet in kaart gebracht,
+      en daarbuiten komen er stap voor stap steden bij.
+    </p>
+
+    {regions.map((region) => (
+      <section class="region">
+        <h2>{region.name}</h2>
+        <p class="region-meta">
+          {region.cities.length} {region.cities.length === 1 ? 'stad' : 'steden'} ·
+          {' '}{formatNl(region.locationCount)} sportlocaties. {region.blurb}
+        </p>
+        <ul class="city-grid">
+          {region.cities.map((city) => (
+            <li>
+              <a href={`/sporten-in-${city.slug}`}>
+                <span class="city-name">{city.name}</span>
+                <span class="city-meta">
+                  {formatNl(city.locationCount)} locaties · {city.sports.length} sporten
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+    <p class="back"><a href="/">&larr; Terug naar de homepage</a></p>
+  </main>
+</BaseLayout>
+
+<style>
+  .steden {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 5%;
+  }
+
+  .crumbs {
+    font-size: .9rem;
+    opacity: .7;
+    margin-bottom: 20px;
+  }
+
+  .steden h1 {
+    font-size: clamp(1.9rem, 7vw, 2.6rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    overflow-wrap: break-word;
+  }
+
+  .lead {
+    font-size: 1.15rem;
+    margin: 20px 0 8px;
+  }
+
+  .region {
+    margin-top: 44px;
+  }
+
+  .region h2 {
+    font-weight: 900;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+  }
+
+  .region-meta {
+    opacity: .75;
+    margin: 6px 0 16px;
+    font-size: .95rem;
+  }
+
+  .city-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+
+  .city-grid a {
+    display: block;
+    background: var(--grey-light);
+    border-radius: 16px;
+    padding: 18px 20px;
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition: border-color .2s, transform .2s;
+  }
+
+  .city-grid a:hover,
+  .city-grid a:focus-visible {
+    border-color: var(--primary-teal);
+    transform: translateY(-2px);
+  }
+
+  .city-name {
+    display: block;
+    font-weight: 800;
+    font-size: 1.15rem;
+  }
+
+  .city-meta {
+    display: block;
+    margin-top: 4px;
+    font-size: .9rem;
+    opacity: .75;
+  }
+
+  .back {
+    margin-top: 48px;
+    font-weight: 700;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .city-grid a { transition: none; }
+    .city-grid a:hover { transform: none; }
+  }
+</style>

@@ -1,0 +1,10 @@
+:root {
+  --primary-teal: #00E6B8;
+  --dark-bg: #0a0a0a;
+  --text-dark: #1a1a1a;
+  --text-light: #ffffff;
+  --grey-light: #f4f4f4;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Montserrat', sans-serif; color: var(--text-dark); background: #ffffff; line-height: 1.6; }
+a { color: inherit; }

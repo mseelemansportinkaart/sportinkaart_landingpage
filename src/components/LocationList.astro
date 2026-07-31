@@ -1,0 +1,19 @@
+---
+import type { CityLocation } from '../lib/cityData';
+interface Props { locations: CityLocation[]; }
+const { locations } = Astro.props;
+---
+<ul style="list-style:none;display:grid;gap:16px;">
+  {locations.map((loc) => (
+    <li style="background:var(--grey-light);border-radius:16px;padding:20px;">
+      <h3 style="font-weight:700;">{loc.name}</h3>
+      {loc.address && <p style="opacity:.8;">{loc.address}</p>}
+      {loc.sport_nl && loc.sport_nl.length > 0 && (
+        <p style="font-size:.9rem;margin-top:6px;">{loc.sport_nl.join(' · ')}</p>
+      )}
+      {loc.website && (
+        <a href={loc.website} rel="nofollow noopener" target="_blank" style="color:var(--primary-teal);font-weight:700;">Website</a>
+      )}
+    </li>
+  ))}
+</ul>

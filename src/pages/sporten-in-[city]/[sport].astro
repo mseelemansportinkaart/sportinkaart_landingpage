@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LocationList from '../../components/LocationList.astro';
+import { getAllCities, type CityLocation } from '../../lib/cityData';
+import { MIN_SPORT_PAGE_LOCATIONS, sportSlug, canonicalSport } from '../../lib/sports';
+
+export async function getStaticPaths() {
+  const cities = await getAllCities();
+  const paths = [];
+  for (const city of cities) {
+    for (const sport of city.sports) {
+      if (sport.count < MIN_SPORT_PAGE_LOCATIONS) continue;
+      const locations = city.locations
+        .filter((l) => (l.sport_nl ?? []).some((s) => canonicalSport(s) === sport.sport))
+        .sort(
+          (a, b) =>
+            Number(b.is_partner) - Number(a.is_partner) ||
+            Number(b.is_featured) - Number(a.is_featured) ||
+            (a.name ?? '').localeCompare(b.name ?? '', 'nl'),
+        );
+      const related = city.sports
+        .filter((s) => s.count >= MIN_SPORT_PAGE_LOCATIONS && s.sport !== sport.sport)
+        .slice(0, 8)
+        .map((s) => ({ sport: s.sport, slug: sportSlug(s.sport), count: s.count }));
+      paths.push({
+        params: { city: city.slug, sport: sportSlug(sport.sport) },
+        props: { cityName: city.name, citySlug: city.slug, sport: sport.sport, count: sport.count, locations, related },
+      });
+    }
+  }
+  return paths;
+}
+
+interface Related { sport: string; slug: string; count: number; }
+interface Props {
+  cityName: string;
+  citySlug: string;
+  sport: string;
+  count: number;
+  locations: CityLocation[];
+  related: Related[];
+}
+const { cityName, citySlug, sport, count, locations, related } = Astro.props;
+
+const cityPath = `/sporten-in-${citySlug}`;
+const path = `${cityPath}/${sportSlug(sport)}`;
+const sportLc = sport.toLowerCase();
+const title = `${sport} in ${cityName}: ${count} locaties op de kaart | Sportinkaart`;
+const description = `Alle ${count} plekken voor ${sportLc} in ${cityName}: adressen en websites, overzichtelijk op één kaart met Sportinkaart.`;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).href },
+      { '@type': 'ListItem', position: 2, name: `Sporten in ${cityName}`, item: new URL(cityPath, Astro.site).href },
+      { '@type': 'ListItem', position: 3, name: `${sport} in ${cityName}`, item: new URL(path, Astro.site).href },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${sport} in ${cityName}`,
+    numberOfItems: locations.length,
+    itemListElement: locations.map((l, i) => ({ '@type': 'ListItem', position: i + 1, name: l.name })),
+  },
+];
+---
+<BaseLayout title={title} description={description} canonicalPath={path} jsonLd={jsonLd}>
+  <main style="max-width:1000px;margin:0 auto;padding:60px 5%;">
+    <nav aria-label="Kruimelpad" style="font-size:.9rem;opacity:.7;margin-bottom:20px;">
+      <a href="/">Home</a> / <a href={cityPath}>Sporten in {cityName}</a> / <span>{sport}</span>
+    </nav>
+    <h1 style="font-size:2.4rem;font-weight:900;text-transform:uppercase;">{sport} in {cityName}</h1>
+    <p style="font-size:1.2rem;margin:20px 0;">
+      In <strong>{cityName}</strong> vind je <strong>{count}</strong> {count === 1 ? 'locatie' : 'locaties'}
+      voor {sportLc}. Bekijk de adressen hieronder of open de kaart in de Sportinkaart-app.
+    </p>
+
+    <LocationList locations={locations} />
+
+    {related.length > 0 && (
+      <section>
+        <h2 style="margin:40px 0 16px;font-weight:900;">Andere sporten in {cityName}</h2>
+        <ul style="list-style:none;display:flex;flex-wrap:wrap;gap:10px;">
+          {related.map((r) => (
+            <li style="background:var(--grey-light);border-radius:50px;padding:8px 16px;font-weight:700;">
+              <a href={`/sporten-in-${citySlug}/${r.slug}`} style="text-decoration:none;color:inherit;">
+                {r.sport} <span style="color:var(--primary-teal);">{r.count}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <p style="margin-top:40px;">
+      <a href={cityPath} style="color:var(--primary-teal);font-weight:700;">← Alle sporten in {cityName}</a>
+    </p>
+  </main>
+</BaseLayout>

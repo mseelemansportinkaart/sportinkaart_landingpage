@@ -1,0 +1,22 @@
+{
+  "name": "sportinkaart-site",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.2.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "astro": "^4.15.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "sharp": "^0.35.3",
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.0"
+  }
+}
