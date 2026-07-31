@@ -22,6 +22,15 @@ const topSportNames = city.sports.slice(0, 5).map((s) => s.sport).join(', ');
 const title = `Sporten in ${city.name} — ${city.locationCount} sportlocaties op de kaart | Sportinkaart`;
 const description = `Ontdek ${city.locationCount} sportlocaties in ${city.name}. Van ${topSportNames} en meer — vind jouw sport in de buurt met Sportinkaart.`;
 
+// The page renders at most 12 of the city's locations. Say so explicitly rather than
+// letting the heading imply it lists all of them — and keep the ItemList below
+// describing exactly the items that are on the page.
+const shownCount = city.topLocations.length;
+const selectionNote =
+  shownCount >= city.locationCount
+    ? `Alle ${city.locationCount} locaties in ${city.name}.`
+    : `Een selectie van ${shownCount} van de ${city.locationCount} locaties in ${city.name}.`;
+
 const jsonLd = [
   {
     '@context': 'https://schema.org',
@@ -35,7 +44,8 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: `Sportlocaties in ${city.name}`,
-    numberOfItems: city.topLocations.length,
+    description: selectionNote,
+    numberOfItems: shownCount,
     itemListElement: city.topLocations.map((loc, i) => ({
       '@type': 'ListItem',
       position: i + 1,
@@ -75,6 +85,7 @@ const jsonLd = [
     <SportBreakdown sports={city.sports} />
 
     <h2 style="margin:40px 0 16px;font-weight:900;">Sportlocaties in {city.name}</h2>
+    <p style="opacity:.75;margin-bottom:16px;">{selectionNote}</p>
     <LocationList locations={city.topLocations} />
 
     <h2 style="margin:40px 0 16px;font-weight:900;">Sporten in andere steden</h2>
